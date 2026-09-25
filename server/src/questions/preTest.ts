@@ -131,5 +131,200 @@ export const preTestQuestions = [
         ],
         correctAnswer: 0,
         explanation: "A useful AI workflow starts with relevant information, asks for practical help, and keeps the owner responsible for verification and decisions."
+    },
+    {
+        id: 11,
+        category: "AI Basics",
+        question: "What is Artificial Intelligence (AI)?",
+        options: [
+            "A type of internet connection",
+            "Technology that enables computers to perform tasks that normally require human intelligence",
+            "A software used only for programming",
+            "A machine that can replace all human workers"
+        ],
+        correctAnswer: 1,
+        explanation: "AI helps computers perform tasks associated with human intelligence; it is not an internet connection or a replacement for people."
+    },
+    {
+        id: 12,
+        category: "AI in the Negosyo",
+        question: "Which of the following is an example of AI that an MSME can use?",
+        options: [
+            "AI-powered chatbot for customer inquiries",
+            "A traditional calculator",
+            "A USB flash drive",
+            "A paper receipt book"
+        ],
+        correctAnswer: 0,
+        explanation: "An AI-powered chatbot can help answer common customer inquiries, while the other tools do not use AI."
+    },
+    {
+        id: 13,
+        category: "Productivity",
+        question: "How can AI help an MSME improve productivity?",
+        options: [
+            "By automatically doing every business task without human supervision",
+            "By helping automate repetitive tasks and generate useful information",
+            "By eliminating the need for employees",
+            "By guaranteeing higher sales"
+        ],
+        correctAnswer: 1,
+        explanation: "AI can support repetitive work and useful analysis, but people still supervise work and make business decisions."
+    },
+    {
+        id: 14,
+        category: "Social Media",
+        question: "An MSME wants to create social media content but has limited time. How can AI help?",
+        options: [
+            "AI can generate content ideas, captions, and drafts",
+            "AI can guarantee that every post will go viral",
+            "AI can automatically make customers buy products",
+            "AI can replace the business owner"
+        ],
+        correctAnswer: 0,
+        explanation: "AI can speed up brainstorming and drafting, while the owner still checks accuracy and chooses what to publish."
+    },
+    {
+        id: 15,
+        category: "AI Business Activities",
+        question: "Which business activity can AI potentially assist with?",
+        options: [
+            "Marketing and content creation",
+            "Customer service",
+            "Data analysis",
+            "All of the above"
+        ],
+        correctAnswer: 3,
+        explanation: "AI can assist with marketing, customer service, and data analysis when people provide oversight."
+    },
+    {
+        id: 16,
+        category: "Customer Feedback",
+        question: "An entrepreneur asks an AI tool to analyze customer feedback. What should the entrepreneur do before making a business decision based on the result?",
+        options: [
+            "Accept the AI’s answer immediately",
+            "Verify and review the AI-generated analysis",
+            "Delete the original customer feedback",
+            "Let AI make the final decision"
+        ],
+        correctAnswer: 1,
+        explanation: "AI analysis is a helpful input, but entrepreneurs should verify it against the original feedback and their business context."
+    },
+    {
+        id: 17,
+        category: "Prompting",
+        question: "Why is it important to provide AI with clear and specific instructions or prompts?",
+        options: [
+            "AI only works when prompts are very long",
+            "Clear instructions can help produce more relevant and useful results",
+            "AI cannot understand short prompts",
+            "It guarantees that the AI will always be correct"
+        ],
+        correctAnswer: 1,
+        explanation: "Clear context, goals, and constraints help AI produce more relevant results, but never guarantee correctness."
+    },
+    {
+        id: 18,
+        category: "Competitor Information",
+        question: "An AI tool generates information about a competitor’s products. What should the business owner do?",
+        options: [
+            "Assume everything is accurate because AI generated it",
+            "Verify important information using reliable sources",
+            "Immediately publish the information",
+            "Use the information without checking its source"
+        ],
+        correctAnswer: 1,
+        explanation: "Important business information needs checking against reliable sources before it is used or shared."
+    },
+    {
+        id: 19,
+        category: "Over-reliance on AI",
+        question: "What is one potential risk of relying too heavily on AI for business decisions?",
+        options: [
+            "The business may become dependent on AI and reduce human judgment",
+            "The business will automatically become more profitable",
+            "Employees will never make mistakes again",
+            "Customers will always prefer the business"
+        ],
+        correctAnswer: 0,
+        explanation: "Over-reliance can reduce careful human judgment, especially when outputs are inaccurate or incomplete."
+    },
+    {
+        id: 20,
+        category: "AI Content",
+        question: "Which statement about AI-generated content is TRUE?",
+        options: [
+            "AI-generated content is always accurate",
+            "AI-generated content never contains errors",
+            "AI-generated content should be reviewed and fact-checked",
+            "AI-generated content does not need human supervision"
+        ],
+        correctAnswer: 2,
+        explanation: "AI-generated content can contain errors, so it should be reviewed and fact-checked before use."
+    },
+    {
+        id: 21,
+        category: "Customer Database",
+        question: "An MSME wants to use AI to analyze its customer database. What should the business consider first?",
+        options: [
+            "Data privacy and whether it is appropriate to upload the information",
+            "Whether the AI has a colorful interface",
+            "Whether the AI can create social media posts",
+            "Whether the AI responds quickly"
+        ],
+        correctAnswer: 0,
+        explanation: "Businesses should protect customer data and decide whether it is appropriate to use before uploading information to an AI tool."
+    },
+    {
+        id: 22,
+        category: "Human Review",
+        question: "What can happen when a business uses AI without sufficient human review?",
+        options: [
+            "AI-related errors may go unnoticed and affect business decisions",
+            "AI automatically corrects all mistakes",
+            "The business will always save money",
+            "Customers will automatically trust the business more"
+        ],
+        correctAnswer: 0,
+        explanation: "Without human review, inaccurate AI outputs can go unnoticed and lead to poor business decisions."
+    },
+    {
+        id: 23,
+        category: "Best Approach",
+        question: "Which is the BEST approach when using AI in an MSME?",
+        options: [
+            "Let AI handle everything",
+            "Avoid AI completely",
+            "Use AI as a tool while maintaining human judgment and oversight",
+            "Use AI only for entertainment"
+        ],
+        correctAnswer: 2,
+        explanation: "The best approach treats AI as an assistant while the owner keeps judgment and oversight."
+    },
+    {
+        id: 24,
+        category: "False Product Feature",
+        question: "An AI tool creates a promotional image containing a product feature that the business does not actually offer. What should the business owner do?",
+        options: [
+            "Publish it anyway because AI created it",
+            "Review and correct the content before publishing",
+            "Ask customers to determine whether it is correct",
+            "Ignore the error"
+        ],
+        correctAnswer: 1,
+        explanation: "Owners must correct unsupported product claims before publishing AI-generated promotional material."
+    },
+    {
+        id: 25,
+        category: "Responsible AI",
+        question: "Which statement BEST describes responsible AI use for MSMEs?",
+        options: [
+            "AI should replace human decision-making whenever possible",
+            "AI should be used strategically to improve productivity while considering accuracy, privacy, ethics, and human judgment",
+            "AI should only be used by large companies",
+            "AI-generated information does not need to be verified"
+        ],
+        correctAnswer: 1,
+        explanation: "Responsible AI use combines productivity benefits with accuracy, privacy, ethics, and human judgment."
     }
 ];

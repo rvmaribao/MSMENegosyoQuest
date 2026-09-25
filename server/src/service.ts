@@ -1,13 +1,14 @@
 import { randomBytes } from 'node:crypto';
 import bcrypt from 'bcryptjs';
 import { AssessmentType, Prisma, PrismaClient } from '@prisma/client';
-import { AppError, rankParticipants, requirePostAccess, scoreAnswers, summarize, type AnswerInput } from './domain.js';
+import { AppError, rankParticipants, requirePostAccess, scoreAnswers, summarize, type AnswerInput, XP_PER_CORRECT_ANSWER } from './domain.js';
+import { questionCountFor, questionIdsFor } from './questions/banks.js';
 
 const db = new PrismaClient();
 const participantSelect = {
   id: true, fullName: true, businessName: true, location: true, industry: true,
   email: true, mobile: true, consentAt: true, createdAt: true, updatedAt: true,
-  attempts: { select: { id: true, type: true, score: true, startedAt: true, completedAt: true } },
+  attempts: { select: { id: true, type: true, score: true, startedAt: true, completedAt: true, _count: { select: { answers: true } } } },
 } satisfies Prisma.ParticipantSelect;
 
 export type ParticipantRegistration = {
@@ -15,7 +16,9 @@ export type ParticipantRegistration = {
 };
 
 function details(participant: Prisma.ParticipantGetPayload<{ select: typeof participantSelect }>) {
-  return { ...participant, ...summarize(participant.attempts) };
+  const { attempts, ...participantDetails } = participant;
+  const completedAttempts = attempts.map(({ _count, ...attempt }) => ({ ...attempt, maximumScore: attempt.completedAt ? _count.answers : questionCountFor(attempt.type) }));
+  return { ...participantDetails, attempts: completedAttempts, ...summarize(completedAttempts) };
 }
 
 export async function registerParticipant(input: ParticipantRegistration) {
@@ -53,8 +56,9 @@ export async function assessmentQuestions(type: AssessmentType, participantId?: 
     if (!participantId) throw new AppError(400, 'participantId is required for the Post-Test.');
     await access(participantId, type);
   }
-  const questions = await db.question.findMany({ where: { type }, orderBy: { position: 'asc' }, select: { id: true, position: true, category: true, question: true, options: true } });
-  if (questions.length !== 10) throw new AppError(503, 'Assessment questions are not ready. Please contact your facilitator.');
+  const expectedIds = questionIdsFor(type);
+  const questions = await db.question.findMany({ where: { type, id: { in: expectedIds } }, orderBy: { position: 'asc' }, select: { id: true, position: true, category: true, question: true, options: true } });
+  if (questions.length !== expectedIds.length || new Set(questions.map(question => question.id)).size !== expectedIds.length) throw new AppError(503, 'Assessment questions are not ready. Please contact your facilitator.');
   return questions;
 }
 
@@ -68,7 +72,9 @@ export async function submitAssessment(type: AssessmentType, participantId: stri
       requirePostAccess(setting?.postTestOpen ?? false, summary.pre !== null);
     }
     if ((type === 'PRE' ? summary.pre : summary.post) !== null) throw new AppError(409, 'This assessment has already been submitted.');
-    const questions = await tx.question.findMany({ where: { type }, orderBy: { position: 'asc' }, select: { id: true, correctAnswer: true, options: true } });
+    const expectedIds = questionIdsFor(type);
+    const questions = await tx.question.findMany({ where: { type, id: { in: expectedIds } }, orderBy: { position: 'asc' }, select: { id: true, correctAnswer: true, options: true } });
+    if (questions.length !== questionCountFor(type)) throw new AppError(503, 'Assessment questions are not ready. Please contact your facilitator.');
     const graded = scoreAnswers(questions, answers);
     try {
       const attempt = await tx.assessmentAttempt.create({
@@ -80,7 +86,7 @@ export async function submitAssessment(type: AssessmentType, participantId: stri
       });
       const attempts = [...participant.attempts, { ...attempt, type }];
       const result = summarize(attempts);
-      return { assessment: type, score: graded.score, maximumScore: 10, xpEarned: graded.score * 100, completedAt: attempt.completedAt, ...result };
+      return { assessment: type, score: graded.score, maximumScore: questions.length, xpEarned: graded.score * XP_PER_CORRECT_ANSWER, completedAt: attempt.completedAt, ...result };
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') throw new AppError(409, 'This assessment has already been submitted.');
       throw error;
@@ -94,8 +100,9 @@ export async function assessmentStatus(participantId: string) {
 }
 
 export async function leaderboard() {
-  const participants = await db.participant.findMany({ select: { id: true, fullName: true, businessName: true, attempts: { select: { id: true, type: true, score: true, startedAt: true, completedAt: true } } } });
-  return rankParticipants(participants).map(({ id, fullName, businessName, rank, pre, post, improvement, xp, level }) => ({ id, fullName, businessName, rank, pre, post, improvement, xp, level }));
+  const participants = await db.participant.findMany({ select: { id: true, fullName: true, businessName: true, attempts: { select: { id: true, type: true, score: true, startedAt: true, completedAt: true, _count: { select: { answers: true } } } } } });
+  const rows = participants.map(({ attempts, ...participant }) => ({ ...participant, attempts: attempts.map(({ _count, ...attempt }) => ({ ...attempt, maximumScore: attempt.completedAt ? _count.answers : questionCountFor(attempt.type) })) }));
+  return rankParticipants(rows).map(({ id, fullName, businessName, rank, pre, post, preMaximumScore, postMaximumScore, improvement, xp, level }) => ({ id, fullName, businessName, rank, pre, post, preMaximumScore, postMaximumScore, improvement, xp, level }));
 }
 
 export async function adminParticipants(query: string, status?: string) {
@@ -113,7 +120,8 @@ export async function adminParticipant(id: string) {
     select: { ...participantSelect, attempts: { select: { id: true, type: true, score: true, startedAt: true, completedAt: true, answers: { select: { questionId: true, selectedOption: true, isCorrect: true } } } } },
   });
   if (!participant) throw new AppError(404, 'Participant not found.');
-  return { ...participant, ...summarize(participant.attempts) };
+  const attempts = participant.attempts.map(attempt => ({ ...attempt, maximumScore: attempt.completedAt ? attempt.answers.length : questionCountFor(attempt.type) }));
+  return { ...participant, attempts, ...summarize(attempts) };
 }
 
 export async function deleteParticipant(id: string) {

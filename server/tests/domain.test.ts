@@ -2,15 +2,19 @@ import { describe, expect, it } from 'vitest';
 import { AppError, rankParticipants, requirePostAccess, scoreAnswers } from '../src/domain.js';
 
 describe('assessment rules', () => {
-  const questions = Array.from({ length: 10 }, (_, index) => ({ id: `q-${index}`, correctAnswer: index % 4, options: ['a', 'b', 'c', 'd'] }));
+  const questions = Array.from({ length: 25 }, (_, index) => ({ id: `q-${index}`, correctAnswer: index % 4, options: ['a', 'b', 'c', 'd'] }));
 
   it('calculates scores from known questions instead of client-supplied values', () => {
-    const answers = questions.map((question, index) => ({ questionId: question.id, selectedOption: index < 7 ? question.correctAnswer : 3 }));
-    expect(scoreAnswers(questions, answers).score).toBe(8);
+    const answers = questions.map(question => ({ questionId: question.id, selectedOption: question.correctAnswer }));
+    expect(scoreAnswers(questions, answers).score).toBe(25);
   });
 
-  it('rejects incomplete submissions', () => {
-    expect(() => scoreAnswers(questions, questions.slice(0, 9).map(question => ({ questionId: question.id, selectedOption: 0 })))).toThrow(AppError);
+  it('rejects incomplete, duplicate, unknown, and wrong-bank submissions', () => {
+    const validAnswers = questions.map(question => ({ questionId: question.id, selectedOption: question.correctAnswer }));
+    expect(() => scoreAnswers(questions, validAnswers.slice(0, 24))).toThrow(AppError);
+    expect(() => scoreAnswers(questions, [...validAnswers.slice(0, 24), validAnswers[0]])).toThrow(AppError);
+    expect(() => scoreAnswers(questions, [...validAnswers.slice(0, 24), { questionId: 'post-25', selectedOption: 1 }])).toThrow(AppError);
+    expect(() => scoreAnswers(questions, [...validAnswers.slice(0, 24), { questionId: 'pre-999', selectedOption: 1 }])).toThrow(AppError);
   });
 
   it('requires both a completed Pre-Test and an open global Post-Test', () => {

@@ -3,9 +3,14 @@ export class AppError extends Error {
 }
 export type AnswerInput = { questionId: string; selectedOption: number };
 export type ScoringQuestion = { id: string; correctAnswer: number; options: string[] };
+export const XP_PER_CORRECT_ANSWER = 100;
 export function scoreAnswers(questions: ScoringQuestion[], answers: AnswerInput[]) {
-  if (questions.length !== 10) throw new AppError(503, 'Assessment questions are not ready. Please contact your facilitator.');
-  if (answers.length !== 10 || new Set(answers.map(a => a.questionId)).size !== 10) throw new AppError(400, 'Answer all 10 questions exactly once.');
+  if (!questions.length) throw new AppError(503, 'Assessment questions are not ready. Please contact your facilitator.');
+  const questionIds = new Set(questions.map(question => question.id));
+  const answerIds = answers.map(answer => answer.questionId);
+  if (answers.length !== questionIds.size || new Set(answerIds).size !== questionIds.size || answerIds.some(id => !questionIds.has(id))) {
+    throw new AppError(400, `Answer all ${questionIds.size} questions exactly once.`);
+  }
   const graded = answers.map(answer => {
     const question = questions.find(q => q.id === answer.questionId);
     if (!question || !Number.isInteger(answer.selectedOption) || answer.selectedOption < 0 || answer.selectedOption >= question.options.length) throw new AppError(400, 'One or more answers are invalid.');
@@ -24,23 +29,25 @@ export function improvement(pre: number | null, post: number | null): number | n
   return pre === null || post === null ? null : post - pre;
 }
 export function progression(xp: number) {
-  if (xp >= 1500) return 'DIGITAL NEGOSYANTE';
-  if (xp >= 1000) return 'GROWING MSME';
-  if (xp >= 400) return 'STARTUP';
+  if (xp >= 3750) return 'DIGITAL NEGOSYANTE';
+  if (xp >= 2500) return 'GROWING MSME';
+  if (xp >= 1000) return 'STARTUP';
   return 'IDEA';
 }
 export function performanceMessage(score: number) {
-  if (score <= 3) return 'Every negosyo starts somewhere. Training arc activated. 🚀';
-  if (score <= 6) return "May diskarte na! Let's sharpen those digital skills.";
-  if (score <= 8) return 'Digital Negosyante in the making. 👏';
+  if (score <= 8) return 'Every negosyo starts somewhere. Training arc activated. 🚀';
+  if (score <= 15) return "May diskarte na! Let's sharpen those digital skills.";
+  if (score <= 20) return 'Digital Negosyante in the making. 👏';
   return 'Grabe, ready na ang negosyo brain! 🔥';
 }
-export type AttemptSummary = { type: 'PRE' | 'POST'; score: number | null; completedAt: Date | null; startedAt: Date; id: string };
+export type AttemptSummary = { type: 'PRE' | 'POST'; score: number | null; completedAt: Date | null; startedAt: Date; id: string; maximumScore?: number };
 export function summarize(attempts: AttemptSummary[]) {
-  const pre = attempts.find(a => a.type === 'PRE' && a.completedAt)?.score ?? null;
-  const post = attempts.find(a => a.type === 'POST' && a.completedAt)?.score ?? null;
-  const xp = ((pre ?? 0) + (post ?? 0)) * 100;
-  return { pre, post, improvement: improvement(pre, post), xp, level: progression(xp), status: post !== null ? 'COMPLETE' : pre !== null ? 'PRE_COMPLETE' : 'REGISTERED' };
+  const preAttempt = attempts.find(a => a.type === 'PRE' && a.completedAt);
+  const postAttempt = attempts.find(a => a.type === 'POST' && a.completedAt);
+  const pre = preAttempt?.score ?? null;
+  const post = postAttempt?.score ?? null;
+  const xp = ((pre ?? 0) + (post ?? 0)) * XP_PER_CORRECT_ANSWER;
+  return { pre, post, preMaximumScore: preAttempt?.maximumScore ?? null, postMaximumScore: postAttempt?.maximumScore ?? null, improvement: improvement(pre, post), xp, level: progression(xp), status: post !== null ? 'COMPLETE' : pre !== null ? 'PRE_COMPLETE' : 'REGISTERED' };
 }
 type Rankable = { id: string; fullName: string; businessName: string; attempts: AttemptSummary[] };
 export function rankParticipants(participants: Rankable[]) {

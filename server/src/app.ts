@@ -11,7 +11,7 @@ import { AppError } from './domain.js';
 import * as service from './service.js';
 
 const registrationSchema = z.object({ fullName: z.string().trim().min(2).max(120), businessName: z.string().trim().min(2).max(160), location: z.string().trim().min(2).max(160), industry: z.string().trim().min(2).max(80), email: z.string().trim().email().max(254).optional().or(z.literal('')), mobile: z.string().trim().min(7).max(30).optional().or(z.literal('')) });
-const submissionSchema = z.object({ participantId: z.string().uuid(), answers: z.array(z.object({ questionId: z.string().min(1), selectedOption: z.number().int() })).length(10) });
+const submissionSchema = z.object({ participantId: z.string().uuid(), answers: z.array(z.object({ questionId: z.string().min(1), selectedOption: z.number().int() })) });
 const loginSchema = z.object({ username: z.string().trim().min(1).max(120), password: z.string().min(1).max(256) });
 const settingSchema = z.object({ postTestOpen: z.boolean() });
 

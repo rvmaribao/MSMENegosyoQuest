@@ -31,16 +31,20 @@ describe('assessment interaction metadata', () => {
     expect(publicInteractionConfig(25).journey).toBe('BECOME A DIGITAL NEGOSYANTE');
   });
 
-  it('preserves separate ten-question Pre-Test and Post-Test banks', () => {
-    expect(preTestQuestions).toHaveLength(10);
-    expect(postTestQuestions).toHaveLength(10);
-    expect(preTestQuestions.map(question => question.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-    expect(postTestQuestions.map(question => question.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('preserves the original questions and appends complete 25-question banks', () => {
+    expect(preTestQuestions).toHaveLength(25);
+    expect(postTestQuestions).toHaveLength(25);
+    expect(preTestQuestions.map(question => question.id)).toEqual(Array.from({ length: 25 }, (_, index) => index + 1));
+    expect(postTestQuestions.map(question => question.id)).toEqual(Array.from({ length: 25 }, (_, index) => index + 1));
+    expect(preTestQuestions[10]).toMatchObject({ question: 'What is Artificial Intelligence (AI)?', correctAnswer: 1 });
+    expect(preTestQuestions[24]).toMatchObject({ question: 'Which statement BEST describes responsible AI use for MSMEs?', correctAnswer: 1 });
   });
 
   it('aligns game questions with their customer, prompt, marketing, data, toolbox, safety, and finale competencies', () => {
     const categories = (bank: typeof preTestQuestions) => bank.slice(3).map(question => question.category);
-    expect(categories(preTestQuestions)).toEqual(['Customer Service', 'Prompting', 'Digital Marketing', 'Sales & Inventory Data', 'AI Toolbox', 'AI Safety', 'Business Growth']);
-    expect(categories(postTestQuestions)).toEqual(['Customer Service', 'Prompting', 'Digital Marketing', 'Sales & Inventory Data', 'AI Toolbox', 'AI Safety', 'Business Growth']);
+    const originalCompetencies = ['Customer Service', 'Prompting', 'Digital Marketing', 'Sales & Inventory Data', 'AI Toolbox', 'AI Safety', 'Business Growth'];
+    expect(categories(preTestQuestions).slice(0, 7)).toEqual(originalCompetencies);
+    expect(categories(postTestQuestions).slice(0, 7)).toEqual(originalCompetencies);
+    expect(categories(postTestQuestions)).toEqual(categories(preTestQuestions));
   });
 });
