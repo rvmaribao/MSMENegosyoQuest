@@ -2,10 +2,10 @@
   "$schema": "https://railway.com/railway.schema.json",
   "build": {
     "builder": "NIXPACKS",
-    "buildCommand": "npm install && npm run db:generate && npm run build"
+    "buildCommand": "npm install --include=dev && npm run db:generate && npm run build"
   },
   "deploy": {
-    "startCommand": "npm run db:deploy && npm run start",
+    "startCommand": "npm run db:deploy && npm run db:seed && npm run start",
     "healthcheckPath": "/api/health",
     "healthcheckTimeout": 100
   }

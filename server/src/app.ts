@@ -23,10 +23,13 @@ function parse<T>(schema: z.ZodType<T>, input: unknown): T {
 
 export function createApp(config: Config) {
   const app = express();
+  const allowedOrigins = config.NODE_ENV === 'production'
+    ? [config.FRONTEND_URL]
+    : [config.FRONTEND_URL, 'http://localhost:5173', 'http://127.0.0.1:5173'];
   app.disable('x-powered-by');
   app.set('trust proxy', config.TRUST_PROXY);
   app.use(helmet());
-  app.use(cors({ origin: [config.FRONTEND_URL, 'http://localhost:5173', 'http://127.0.0.1:5173'], methods: ['GET', 'POST', 'PATCH', 'DELETE'], allowedHeaders: ['Content-Type', 'Authorization'] }));
+  app.use(cors({ origin: allowedOrigins, methods: ['GET', 'POST', 'PATCH', 'DELETE'], allowedHeaders: ['Content-Type', 'Authorization'], credentials: false, maxAge: 600 }));
   app.use(express.json({ limit: '32kb' }));
 
   app.get('/api/health', (_request, response) => response.status(200).json({ status: 'ok' }));
