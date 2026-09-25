@@ -4,21 +4,31 @@ import { postTestQuestions } from '../src/questions/postTest.js';
 import { preTestQuestions } from '../src/questions/preTest.js';
 
 describe('assessment interaction metadata', () => {
-  it('maps all ten questions to the intended interaction sequence', () => {
-    expect(Array.from({ length: 10 }, (_, index) => interactionForPosition(index + 1))).toEqual([
+  it('maps both assessment chapters to the intended interaction sequence', () => {
+    expect(Array.from({ length: 25 }, (_, index) => interactionForPosition(index + 1))).toEqual([
       'STANDARD', 'STANDARD', 'STANDARD', 'CATCH_CUSTOMER', 'PROMPT_BUILDER',
       'MARKETING_SWIPE', 'DATA_HUNT', 'TOOLBOX_MATCH', 'RED_FLAG_RUSH', 'BOSS_BATTLE',
+      'AI_DEFINITION', 'FIND_THE_AI', 'PRODUCTIVITY', 'CONTENT_FACTORY', 'AI_TOOLBOX',
+      'DECISION_ROOM', 'PROMPT_POWER', 'FACT_CHECK', 'AI_AUTOPILOT', 'QUALITY_CONTROL',
+      'PRIVACY_SHIELD', 'HUMAN_REVIEW', 'AI_TEAM', 'AD_INSPECTOR', 'DIGITAL_NEGOSYANTE',
     ]);
-    expect(interactionTypes).toHaveLength(8);
+    expect(interactionTypes).toHaveLength(23);
   });
 
   it('keeps scoring and correct-answer data out of public interaction configuration', () => {
-    for (let position = 1; position <= 10; position += 1) {
+    for (let position = 1; position <= 25; position += 1) {
       const config = publicInteractionConfig(position) as Record<string, unknown>;
       expect(config).not.toHaveProperty('correctAnswer');
       expect(config).not.toHaveProperty('isCorrect');
       expect(config).not.toHaveProperty('answer');
     }
+  });
+
+  it('labels the new chapter ranges without exposing answer metadata', () => {
+    expect(publicInteractionConfig(11).journey).toBe('DISCOVER AI');
+    expect(publicInteractionConfig(16).journey).toBe('USE AI WISELY');
+    expect(publicInteractionConfig(21).journey).toBe('RESPONSIBLE AI');
+    expect(publicInteractionConfig(25).journey).toBe('BECOME A DIGITAL NEGOSYANTE');
   });
 
   it('preserves separate ten-question Pre-Test and Post-Test banks', () => {
