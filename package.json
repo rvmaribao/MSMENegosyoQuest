@@ -1,0 +1,20 @@
+{
+  "name": "msme-negosyo-quest",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": ["client", "server"],
+  "engines": { "node": ">=22.12.0" },
+  "scripts": {
+    "dev": "concurrently -n API,WEB -c blue,yellow \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build": "npm run build -w server && npm run build -w client",
+    "typecheck": "npm run typecheck --workspaces",
+    "test": "npm run test -w server",
+    "test:integration": "npm run test:integration -w server",
+    "start": "npm run start -w server",
+    "db:generate": "npm run db:generate -w server",
+    "db:validate": "npm run db:validate -w server",
+    "db:deploy": "npm run db:deploy -w server",
+    "db:seed": "npm run db:seed -w server"
+  },
+  "devDependencies": { "concurrently": "^9.2.1", "@playwright/test": "^1.58.2" }
+}

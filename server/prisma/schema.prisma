@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AssessmentType {
+  PRE
+  POST
+}
+
+model Participant {
+  id             String              @id @default(uuid()) @db.Uuid
+  fullName       String              @db.VarChar(120)
+  businessName   String              @db.VarChar(160)
+  location       String              @db.VarChar(160)
+  industry       String              @db.VarChar(80)
+  email          String?             @unique @db.VarChar(254)
+  mobile         String?             @db.VarChar(30)
+  recoveryHash   String
+  consentAt      DateTime            @default(now())
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  attempts       AssessmentAttempt[]
+
+  @@index([createdAt])
+}
+
+model Question {
+  id             String              @id
+  type           AssessmentType
+  position       Int
+  category       String
+  question       String
+  options        String[]
+  correctAnswer  Int
+  explanation    String
+  negosyoTip     String?
+  answers        AssessmentAnswer[]
+
+  @@unique([type, position])
+}
+
+model AssessmentAttempt {
+  id             String              @id @default(uuid()) @db.Uuid
+  participantId  String              @db.Uuid
+  type           AssessmentType
+  score          Int?
+  startedAt      DateTime            @default(now())
+  completedAt    DateTime?
+  participant    Participant         @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  answers        AssessmentAnswer[]
+
+  @@unique([participantId, type])
+  @@index([type, completedAt])
+}
+
+model AssessmentAnswer {
+  attemptId      String              @db.Uuid
+  questionId     String
+  selectedOption Int
+  isCorrect      Boolean?
+  attempt        AssessmentAttempt   @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question       Question            @relation(fields: [questionId], references: [id], onDelete: Restrict)
+
+  @@id([attemptId, questionId])
+}
+
+model AppSetting {
+  key            String              @id
+  postTestOpen   Boolean             @default(false)
+  updatedAt      DateTime            @updatedAt
+}
