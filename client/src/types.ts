@@ -1,0 +1,5 @@
+export type Attempt = { id: string; type: 'PRE' | 'POST'; score: number | null; startedAt: string; completedAt: string | null };
+export type Participant = { id: string; fullName: string; businessName: string; location: string; industry: string; email?: string | null; mobile?: string | null; attempts: Attempt[]; pre: number | null; post: number | null; improvement: number | null; xp: number; level: string; status: string; postTestOpen?: boolean; postTestAvailable?: boolean };
+export type Question = { id: string; position: number; category: string; question: string; options: string[] };
+export type Result = { score: number; maximumScore: number; xpEarned: number; pre: number | null; post: number | null; improvement: number | null; xp: number; level: string };
+export type LeaderboardRow = { id: string; fullName: string; businessName: string; rank: number; pre: number; post: number | null; improvement: number | null; xp: number; level: string };
