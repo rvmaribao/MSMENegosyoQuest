@@ -55,55 +55,55 @@ export const preTestQuestions = [
     },
     {
         id: 5,
-        category: "Sales & Data",
-        question: "Your spreadsheet contains six months of sales records. How can AI and spreadsheet tools help?",
+        category: "Prompting",
+        question: "A small milk-tea shop wants a Facebook promo for students after class. Which instruction would give AI the most useful starting point?",
         options: [
-            "Identify trends, summarize data, and help create formulas or charts",
-            "Change low sales into high sales automatically",
-            "Hide bad months from reality",
-            "Predict next year's exact revenue with 100% certainty"
+            "Write something nice about milk tea.",
+            "Create a friendly Facebook post for students near our Quezon City milk-tea shop: 3–6 PM weekday promo, upbeat Filipino tone, under 80 words, and do not invent prices.",
+            "Make every student buy milk tea today.",
+            "Copy every post from our competitors."
         ],
-        correctAnswer: 0,
-        explanation: "Digital tools can help analyze historical sales and reveal trends. Forecasts can support planning but are never guaranteed."
+        correctAnswer: 1,
+        explanation: "Useful prompts state the audience, channel, offer, tone, length, and factual limits."
     },
     {
         id: 6,
-        category: "Inventory",
-        question: "Why is digital inventory tracking useful?",
+        category: "Digital Marketing",
+        question: "A home-based food seller wants more weekday orders but only has one hour to prepare social posts. Which AI-assisted marketing approach is most practical?",
         options: [
-            "It helps monitor stock levels and identify products that need restocking",
-            "It magically creates additional inventory",
-            "It makes suppliers deliver instantly",
-            "So you can discover 'hala, hurot na diay' only after the customer orders"
+            "Ask AI for a one-week content calendar and caption variations, then review the facts and schedule the useful posts.",
+            "Ask AI to post automatically without checking any claim or price.",
+            "Buy followers instead of making content for real customers.",
+            "Use one generic post for every product and audience forever."
         ],
         correctAnswer: 0,
-        explanation: "Good inventory tracking reduces stockouts, overstocking, and uncertainty."
+        explanation: "AI can speed up planning and drafting, while the owner still checks accuracy and chooses what fits the business."
     },
     {
         id: 7,
-        category: "Pricing & Profit",
-        question: "Your business generated ₱100,000 in sales this month. Does that automatically mean you earned ₱100,000 in profit?",
+        category: "Sales & Inventory Data",
+        question: "A sari-sari store keeps running out of coffee while slow-moving snacks fill the shelf. What is the best question to ask AI after sharing a clean sales and stock summary?",
         options: [
-            "Yes. Book the vacation.",
-            "Yes. Revenue and profit are twins.",
-            "No. Costs and operating expenses still need to be deducted.",
-            "Only if you post the ₱100,000 on Facebook."
+            "Which products sell fastest, which are slow-moving, and what stock patterns should I review before reordering?",
+            "Can you make the slow-moving snacks disappear?",
+            "Can you guarantee next month’s exact sales?",
+            "Can you hide the low-sales days from my records?"
         ],
-        correctAnswer: 2,
-        explanation: "Revenue is money generated from sales. Profit is what remains after applicable costs and expenses are deducted."
+        correctAnswer: 0,
+        explanation: "AI can help summarize patterns, but owners still need accurate records and judgment before ordering stock."
     },
     {
         id: 8,
-        category: "Digital Presence",
-        question: "Which is the BEST reason for an MSME to maintain an active digital presence?",
+        category: "AI Toolbox",
+        question: "A local tourism business has dozens of visitor comments and does not know which service issue to fix first. Which AI capability best matches the problem?",
         options: [
-            "To make the logo look expensive",
-            "To help customers discover, understand, contact, and potentially buy from the business",
-            "Because every business needs to become an influencer",
-            "To collect followers even if none become customers"
+            "Summarize common feedback themes from anonymized reviews for the owner to check.",
+            "Invent five-star reviews that were never written.",
+            "Reply to every visitor without the owner checking the message.",
+            "Share private guest contact details in a public prompt."
         ],
-        correctAnswer: 1,
-        explanation: "Digital presence should support business objectives such as awareness, trust, communication, leads, and sales."
+        correctAnswer: 0,
+        explanation: "AI can summarize recurring feedback when sensitive details are removed and the owner reviews the findings."
     },
     {
         id: 9,
@@ -122,14 +122,14 @@ export const preTestQuestions = [
     {
         id: 10,
         category: "Business Growth",
-        question: "What is the healthiest way for an MSME owner to approach AI?",
+        question: "A small food business has slow sales, leftover products, and repeated customer questions. Which plan uses AI as a responsible business assistant?",
         options: [
-            "Let AI make every business decision",
-            "Ignore AI completely",
-            "Use AI to improve productivity and decision support while keeping human judgment and business knowledge in control",
-            "Replace every employee tomorrow"
+            "Give AI a clean, non-sensitive sales and FAQ summary; ask for trend and reply ideas; then review and test small changes before acting.",
+            "Upload customer passwords and let AI decide every discount and reorder.",
+            "Publish every AI suggestion immediately because it sounds confident.",
+            "Avoid checking sales records and ask AI to guess the problem."
         ],
-        correctAnswer: 2,
-        explanation: "AI can augment human capabilities, but business judgment, accountability, customer knowledge, and strategy remain human responsibilities."
+        correctAnswer: 0,
+        explanation: "A useful AI workflow starts with relevant information, asks for practical help, and keeps the owner responsible for verification and decisions."
     }
 ];

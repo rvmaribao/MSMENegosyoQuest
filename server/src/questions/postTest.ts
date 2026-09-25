@@ -31,32 +31,32 @@ export const postTestQuestions = [
     explanation: 'Empathy must be paired with accurate commitments. Review AI drafts against your actual policies and ability to deliver.'
   },
   {
-    id: 5, category: 'Sales & Data',
-    question: 'Rico’s sales sheet shows a sudden threefold jump. Before using an AI summary to plan purchases, he notices the same receipts were imported twice. What should happen first?',
-    options: ['Order triple the stock immediately.', 'Post “record-breaking sales” before anyone checks.', 'Remove duplicate records, verify totals, and rerun the analysis.', 'Ask AI to ignore anything inconvenient.'],
+    id: 5, category: 'Prompting',
+    question: 'A Cebuano tablea maker wants AI to draft a product description for online buyers. Which prompt gives the clearest useful brief?',
+    options: ['Make tablea famous.', 'Write anything about chocolate.', 'Write a warm 70-word product description for our locally made tablea for first-time online buyers. Mention its real ingredients, suggest one serving use, use simple Filipino-English, and do not invent health claims.', 'Promise that our tablea cures every problem.'],
     correctAnswer: 2,
-    explanation: 'Reliable decisions need accurate input. Clean duplicates and validate totals before interpreting trends or forecasts.'
+    explanation: 'A practical prompt gives AI a product, audience, format, factual limits, and intended tone.'
   },
   {
-    id: 6, category: 'Inventory',
-    question: 'A sari-sari store sells about 8 packs of coffee daily. Delivery takes 3 days, and the owner keeps 6 packs as a safety buffer. At roughly what stock level should a reorder be triggered?',
-    options: ['30 packs: 8 × 3 days, plus 6 buffer packs.', '6 packs, regardless of delivery time.', '0 packs. Surprise stockout sale!', '300 packs for every product, no questions asked.'],
+    id: 6, category: 'Digital Marketing',
+    question: 'A neighborhood café wants to promote a new merienda bundle without spending all day online. Which AI-assisted campaign approach should it try first?',
+    options: ['Ask AI for three audience-specific caption ideas and a simple one-week posting plan, then check the menu, price, and photos before posting.', 'Ask AI to promise free delivery anywhere even though the café has no delivery service.', 'Use only a copied competitor post with the café name replaced.', 'Post every draft instantly without checking whether the bundle is available.'],
     correctAnswer: 0,
-    explanation: 'A basic reorder point covers expected demand during delivery lead time plus safety stock: (8 × 3) + 6 = 30 packs. Adjust when demand or lead times change.'
+    explanation: 'AI can create options quickly, but a small focused campaign still needs real offers, accurate details, and owner review.'
   },
   {
-    id: 7, category: 'Pricing & Profit',
-    question: 'Maya sells 50 snack boxes at ₱100 each. Ingredients and packaging cost ₱60 per box, and delivery plus other operating costs total ₱500. What is the profit for this batch?',
-    options: ['₱5,000 — all sales are pocket money.', '₱2,500.', '₱2,000, because operating costs are optional.', '₱1,500: ₱5,000 sales − ₱3,000 product costs − ₱500 operating costs.'],
-    correctAnswer: 3,
-    explanation: 'Profit accounts for both product costs and operating expenses. For this batch: 50 × (100 − 60) − 500 = ₱1,500.'
+    id: 7, category: 'Sales & Inventory Data',
+    question: 'A small producer has monthly sales, current stock, and delivery dates in a spreadsheet. What is the most useful AI analysis request before the next buying decision?',
+    options: ['Summarize fast- and slow-moving items, flag low-stock products, and show unusual sales changes for the owner to verify.', 'Predict exact sales for the next five years with no uncertainty.', 'Delete slow-selling products from the records before analysis.', 'Replace the supplier agreement with an AI guess.'],
+    correctAnswer: 0,
+    explanation: 'AI can help surface patterns in clean business data, but people must verify records and make the final buying decision.'
   },
   {
-    id: 8, category: 'Digital Presence',
-    question: 'Customers keep messaging “Saan po kayo?” and arriving when a repair shop is closed. Which update will most directly reduce that friction?',
-    options: ['Change the logo every week.', 'Publish accurate hours, a map pin, contact details, services, and a clear booking step on the shop’s profiles.', 'Buy followers from another country.', 'Replace service information with motivational quotes.'],
-    correctAnswer: 1,
-    explanation: 'An effective digital presence helps customers take action. Accurate location, hours, services, and contact information remove common barriers.'
+    id: 8, category: 'AI Toolbox',
+    question: 'An online seller receives the same delivery and size questions every day. Which AI capability best matches the problem?',
+    options: ['Draft a set of polite FAQ replies using the seller’s real delivery and sizing policy, then have the owner review them.', 'Make up delivery times for every customer.', 'Upload customer payment details to get faster answers.', 'Block every customer who asks a question.'],
+    correctAnswer: 0,
+    explanation: 'AI can draft repeatable customer-service replies, but the business must supply accurate policies and review every message.'
   },
   {
     id: 9, category: 'AI Safety',
@@ -67,10 +67,10 @@ export const postTestQuestions = [
   },
   {
     id: 10, category: 'Business Growth',
-    question: 'Ana can spend only two hours a week experimenting with AI in her tailoring shop. Which first project gives her a practical way to judge its value?',
-    options: ['Pilot AI-assisted quote drafts for two weeks, review each draft, and compare time saved and errors with her current process.', 'Replace every workflow on Monday morning.', 'Buy every subscription before choosing a problem.', 'Let AI set the business strategy without checking customer needs.'],
+    question: 'A tailoring shop has late replies, unsold fabric, and little time to plan promotions. Which AI-assisted mission gives the owner the safest practical next step?',
+    options: ['Use an anonymized summary of inquiries, sales, and fabric stock; ask AI for reply and promotion ideas; review the suggestions and test a small pilot.', 'Give AI customer passwords and let it set all prices without checking.', 'Use AI output as final policy even when it conflicts with the shop’s real capacity.', 'Buy every AI subscription before deciding which business problem matters.'],
     correctAnswer: 0,
-    explanation: 'Start with a focused, measurable pilot. Compare benefits and mistakes, retain human review, and expand only when results justify it.',
+    explanation: 'A strong AI workflow connects a real business problem to useful data and a focused request, then keeps human review in the final decision.',
     negosyoTip: 'Small experiment, useful evidence. Hindi subscription collection.'
   }
 ];
