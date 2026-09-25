@@ -15,6 +15,19 @@ const config: Config = {
 };
 
 describe('HTTP deployment contract', () => {
+  it('authenticates valid admin environment credentials through POST /api/admin/login', async () => {
+    const response = await request(createApp(config)).post('/api/admin/login').send({ username: config.ADMIN_USERNAME, password: config.ADMIN_PASSWORD });
+    expect(response.status).toBe(200);
+    expect(response.body).toMatchObject({ expiresIn: 28_800 });
+    expect(response.body.token).toEqual(expect.any(String));
+  });
+
+  it('rejects invalid admin environment credentials through POST /api/admin/login', async () => {
+    const response = await request(createApp(config)).post('/api/admin/login').send({ username: config.ADMIN_USERNAME, password: 'not-the-admin-password' });
+    expect(response.status).toBe(401);
+    expect(response.body.message).toBe('Invalid admin credentials.');
+  });
+
   it('serves the health endpoint with the configured production CORS origin', async () => {
     const response = await request(createApp(config)).get('/api/health').set('Origin', config.FRONTEND_URL);
     expect(response.status).toBe(200);
