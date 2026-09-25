@@ -1,6 +1,4 @@
 import { randomUUID } from 'node:crypto';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import type { ErrorRequestHandler, Request, Response } from 'express';
 import express from 'express';
 import cors from 'cors';
@@ -16,7 +14,6 @@ const registrationSchema = z.object({ fullName: z.string().trim().min(2).max(120
 const submissionSchema = z.object({ participantId: z.string().uuid(), answers: z.array(z.object({ questionId: z.string().min(1), selectedOption: z.number().int() })).length(10) });
 const loginSchema = z.object({ username: z.string().trim().min(1).max(120), password: z.string().min(1).max(256) });
 const settingSchema = z.object({ postTestOpen: z.boolean() });
-const clientDistPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../client/dist');
 
 function parse<T>(schema: z.ZodType<T>, input: unknown): T {
   const result = schema.safeParse(input);
@@ -29,9 +26,7 @@ export function createApp(config: Config) {
   app.disable('x-powered-by');
   app.set('trust proxy', config.TRUST_PROXY);
   app.use(helmet());
-  if (config.NODE_ENV !== 'production') {
-    app.use(cors({ origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], methods: ['GET', 'POST', 'PATCH', 'DELETE'], allowedHeaders: ['Content-Type', 'Authorization'] }));
-  }
+  app.use(cors({ origin: [config.FRONTEND_URL, 'http://localhost:5173', 'http://127.0.0.1:5173'], methods: ['GET', 'POST', 'PATCH', 'DELETE'], allowedHeaders: ['Content-Type', 'Authorization'] }));
   app.use(express.json({ limit: '32kb' }));
 
   app.get('/api/health', (_request, response) => response.status(200).json({ status: 'ok' }));
@@ -61,11 +56,6 @@ export function createApp(config: Config) {
   admin.get('/analytics', async (_request, response, next) => { try { response.json(await service.analytics()); } catch (error) { next(error); } });
   app.use('/api/admin', admin);
 
-  app.use('/api', (_request, _response, next) => next(new AppError(404, 'Endpoint not found.')));
-  if (config.NODE_ENV === 'production') {
-    app.use(express.static(clientDistPath, { index: false }));
-    app.get('/{*splat}', (_request, response, next) => response.sendFile(path.join(clientDistPath, 'index.html'), error => error ? next(error) : undefined));
-  }
   app.use((_request, _response, next) => next(new AppError(404, 'Endpoint not found.')));
   const errorHandler: ErrorRequestHandler = (error, request: Request, response: Response, _next) => {
     const requestId = request.header('x-request-id') ?? randomUUID();
